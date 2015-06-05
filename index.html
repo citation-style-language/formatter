@@ -51,10 +51,28 @@
         $("#doFormat").click(doFormat);
         
         function doFormat() {
-            var inputXML = $('#source-text').val();
-            var outputXML = vkbeautify.xml(inputXML, 2);
+            var outputXML = $('#source-text').val();
+            
+            outputXML = vkbeautify.xml(outputXML, 2);
+            
+            // Substitutions
+            outputXML = outputXML.replace(/\u00a0/g,"&#160;"); //no-break space
+            outputXML = outputXML.replace(/ᵉ/g,"&#7497;"); //modifier letter small e
+            outputXML = outputXML.replace(/‑/g,"&#8209;"); //non-breaking hyphen
+            outputXML = outputXML.replace(/–/g,"&#8211;"); //en dash
+            outputXML = outputXML.replace(/—/g,"&#8212;"); //em dash
+            outputXML = outputXML.replace(/ /g,"&#8239;"); //narrow no-break space
+            
             $("#output-text").text(outputXML);
         }
+        
+        //To do:
+        //Substitutions
+        //Reorder elements cs:info
+        //Reorder attributes on cs:link
+        //Trim whitespace from cs:summary text contents
+        //Trim whitespace from cs:title text contents
+        
     </script>
 </body>
 
