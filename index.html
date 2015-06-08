@@ -85,6 +85,18 @@
                 }
             }
             
+            //Reorder child elements in cs:info
+            var infoChildNodes = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","info")[0].childNodes;
+            for (var i = 0; i < infoChildNodes.length; i++) {
+                //Skip Text nodes; http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output
+                if (infoChildNodes[i].nodeType != 3) {
+                    console.log(i);
+                    //XML comment is 8; Element is 1
+                    console.log(infoChildNodes[i].nodeType);
+                    console.log(infoChildNodes[i].tagName);
+                }
+            }
+            
             var serializer = new XMLSerializer(); 
             var outputXML = serializer.serializeToString(XmlObject);            
             
