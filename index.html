@@ -50,13 +50,38 @@
     <script>
         $("#doFormat").click(doFormat);
         
+        function parseXML (xmlStr) {
+            if (window.DOMParser) {
+                var parser=new DOMParser();
+                xmlDoc=parser.parseFromString(xmlStr,"text/xml");
+            } else { // code for IE
+                var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async=false;
+                xmlDoc.loadXML(xmlStr);
+            }
+            return xmlDoc
+        }
+
         function doFormat() {
-            var outputXML = $('#source-text').val();
+            var inputString = $('#source-text').val();
+            
+            var XmlObject = parseXML(inputString);
+            
+            //Trim whitespace from cs:title textContent
+            var styleTitle = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","title")[0];
+            styleTitle.textContent = styleTitle.textContent.trim();
+            
+            //Trim whitespace from cs:summary textContent
+            var styleSummary = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","summary")[0];
+            styleSummary.textContent = styleSummary.textContent.trim();
+            
+            var serializer = new XMLSerializer(); 
+            var outputXML = serializer.serializeToString(XmlObject);            
             
             outputXML = vkbeautify.xml(outputXML, 2);
             
-            // Substitutions
-            outputXML = outputXML.replace(/\u00a0/g,"&#160;"); //no-break space
+            //Escape hard-to-identify characters
+            //outputXML = outputXML.replace(/\u00a0/g,"&#160;"); //no-break space (somehow doesn't work)
             outputXML = outputXML.replace(/ᵉ/g,"&#7497;"); //modifier letter small e
             outputXML = outputXML.replace(/‑/g,"&#8209;"); //non-breaking hyphen
             outputXML = outputXML.replace(/–/g,"&#8211;"); //en dash
@@ -67,11 +92,8 @@
         }
         
         //To do:
-        //Substitutions
         //Reorder elements cs:info
         //Reorder attributes on cs:link
-        //Trim whitespace from cs:summary text contents
-        //Trim whitespace from cs:title text contents
         
     </script>
 </body>
