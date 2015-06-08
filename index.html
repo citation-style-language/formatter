@@ -75,6 +75,16 @@
             var styleSummary = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","summary")[0];
             styleSummary.textContent = styleSummary.textContent.trim();
             
+            //Reorder attributes on cs:link
+            var styleLinks = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","link");
+            for (var i = 0; i < styleLinks.length; i++) {
+                if (styleLinks[i].hasAttribute("rel")) {
+                    var relValue = styleLinks[i].getAttribute("rel");
+                    styleLinks[i].removeAttribute("rel"); 
+                    styleLinks[i].setAttribute("rel", relValue);
+                }
+            }
+            
             var serializer = new XMLSerializer(); 
             var outputXML = serializer.serializeToString(XmlObject);            
             
@@ -93,8 +103,6 @@
         
         //To do:
         //Reorder elements cs:info
-        //Reorder attributes on cs:link
-        
     </script>
 </body>
 
