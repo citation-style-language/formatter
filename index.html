@@ -63,8 +63,7 @@
         }
 
         function doFormat() {
-            var inputString = $('#source-text').val();
-            
+            var inputString = document.getElementById("source-text").value;
             var XmlObject = parseXML(inputString);
             
             //Trim whitespace from cs:title textContent
@@ -110,7 +109,7 @@
             outputXML = vkbeautify.xml(outputXML, 2);
             
             //Escape hard-to-identify characters
-            //outputXML = outputXML.replace(/\u00a0/g,"&#160;"); //no-break space (somehow doesn't work)
+            outputXML = outputXML.replace(/\u00a0/g,"&#160;"); //no-break space
             outputXML = outputXML.replace(/ᵉ/g,"&#7497;"); //modifier letter small e
             outputXML = outputXML.replace(/‑/g,"&#8209;"); //non-breaking hyphen
             outputXML = outputXML.replace(/–/g,"&#8211;"); //en dash
@@ -119,9 +118,6 @@
             
             $("#output-text").text(outputXML);
         }
-        
-        //To do:
-        //Reorder elements cs:info
     </script>
 </body>
 
