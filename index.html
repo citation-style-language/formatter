@@ -69,11 +69,15 @@
             
             //Trim whitespace from cs:title textContent
             var styleTitle = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","title")[0];
-            styleTitle.textContent = styleTitle.textContent.trim();
+            if (styleTitle) {
+                styleTitle.textContent = styleTitle.textContent.trim();
+            }
             
             //Trim whitespace from cs:summary textContent
             var styleSummary = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","summary")[0];
-            styleSummary.textContent = styleSummary.textContent.trim();
+            if (styleSummary) {
+                styleSummary.textContent = styleSummary.textContent.trim();
+            }
             
             //Reorder attributes on cs:link
             var styleLinks = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","link");
@@ -86,14 +90,17 @@
             }
             
             //Reorder child elements in cs:info
-            var infoChildNodes = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","info")[0].childNodes;
-            for (var i = 0; i < infoChildNodes.length; i++) {
-                //Skip Text nodes; http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output
-                if (infoChildNodes[i].nodeType != 3) {
-                    console.log(i);
-                    //XML comment is 8; Element is 1
-                    console.log(infoChildNodes[i].nodeType);
-                    console.log(infoChildNodes[i].tagName);
+            var infoNode = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","info")[0];
+            if (infoNode) {
+                var infoChildNodes = infoNode.childNodes;
+                for (var i = 0; i < infoChildNodes.length; i++) {
+                    //Skip Text nodes; http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output
+                    if (infoChildNodes[i].nodeType != 3) {
+                        console.log(i);
+                        //XML comment is 8; Element is 1
+                        console.log(infoChildNodes[i].nodeType);
+                        console.log(infoChildNodes[i].tagName);
+                    }
                 }
             }
             
