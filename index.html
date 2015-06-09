@@ -165,13 +165,14 @@
                 }
 
                 sortedNodes.sort(function(a,b) {
-                    return getIndex(a) == getIndex(b) ? 0 : (getIndex(a) > getIndex(b) ? 1 : -1);
+                    var indexA = getIndex(a);
+                    var indexB = getIndex(b);
+                    
+                    return indexA == indexB ? 0 : (indexA > indexB ? 1 : -1);
                 });
 
                 for (i = 0; i < sortedNodes.length; ++i) {
-                //for (i = sortedNodes.length - 1; i > -1; --i) {
                   infoNode.appendChild(sortedNodes[i]);
-                  //console.log(sortedNodes[i].tagName);
                 }
             }
             
