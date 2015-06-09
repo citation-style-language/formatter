@@ -72,7 +72,37 @@
             "eissn", "issnl", "summary", "published", "updated", "rights",
             "end-comment"];
             
-            nodeKey = node.tagName;
+            // Special treatment of XML comments
+            var hasPrecedingElement = false;
+            var hasFollowingElement = false;
+            if (node.nodeType == 8) {
+                var searchNode = node;
+                var precedingElement;
+                while( hasPrecedingElement === false && (searchNode = searchNode.previousSibling) !== null ) {
+                    if (searchNode.nodeType == 1) {
+                        hasPrecedingElement = true;
+                        precedingElement = searchNode;
+                    }
+                }
+                
+                searchNode = node;
+                while( hasFollowingElement === false && (searchNode = searchNode.nextSibling) !== null ) {
+                    if (searchNode.nodeType == 1 || searchNode.nodeType == 8) {
+                        hasFollowingElement = true;
+                    }
+                }
+                
+                if (hasPrecedingElement === false) {
+                    nodeKey = "preceding-comment";
+                } else if (hasFollowingElement === false) {
+                    nodeKey = "end-comment";
+                } else {
+                    nodeKey = precedingElement.tagName;
+                }
+            } else {
+                nodeKey = node.tagName;
+            }
+            
             switch (node.tagName) {
                 case "link":
                     if (node.hasAttribute("rel")) {
@@ -87,8 +117,6 @@
                 default:
                     break;
             }
-            
-            console.log(nodeKey);
             
             return desiredNodeOrder.indexOf(nodeKey);
         }
@@ -142,16 +170,6 @@
                   infoNode.appendChild(sortedNodes[i]);
                   //console.log(sortedNodes[i].tagName);
                 }
-                
-                // for (var i = 0; i < infoChildNodes.length; i++) {
-                //     //Skip Text nodes; http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output
-                //     if (infoChildNodes[i].nodeType != 3) {
-                //         console.log(i);
-                //         //XML comment is 8; Element is 1
-                //         console.log(infoChildNodes[i].nodeType);
-                //         console.log(infoChildNodes[i].tagName);
-                //     }
-                // }
             }
             
             var serializer = new XMLSerializer(); 
