@@ -63,6 +63,35 @@
             }
             return xmlDoc
         }
+        
+        function getIndex(node) {
+            desiredNodeOrder = ["preceding-comment", "title", "title-short", "id",
+            "link[@rel='self']", "link[@rel='independent-parent']", "link[@rel='template']",
+            "link[@rel='documentation']", "author", "contributor",
+            "category[@citation-format]", "category[@field]", "issn",
+            "eissn", "issnl", "summary", "published", "updated", "rights",
+            "end-comment"];
+            
+            nodeKey = node.tagName;
+            switch (node.tagName) {
+                case "link":
+                    if (node.hasAttribute("rel")) {
+                        nodeKey = nodeKey + "[@rel='" + node.getAttribute("rel") + "']";
+                    }
+                case "category":
+                    if (node.hasAttribute("citation-format")) {
+                        nodeKey = nodeKey + "[@" + "citation-format" + "]";
+                    } else if (node.hasAttribute("field")) {
+                        nodeKey = nodeKey + "[@" + "field" + "]";
+                    }
+                default:
+                    break;
+            }
+            
+            console.log(nodeKey);
+            
+            return desiredNodeOrder.indexOf(nodeKey);
+        }
 
         function doFormat() {
             var inputString = document.getElementById("source-text").value;
@@ -94,15 +123,35 @@
             var infoNode = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","info")[0];
             if (infoNode) {
                 var infoChildNodes = infoNode.childNodes;
-                for (var i = 0; i < infoChildNodes.length; i++) {
-                    //Skip Text nodes; http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output
-                    if (infoChildNodes[i].nodeType != 3) {
-                        console.log(i);
-                        //XML comment is 8; Element is 1
-                        console.log(infoChildNodes[i].nodeType);
-                        console.log(infoChildNodes[i].tagName);
+                
+                var sortedNodes = [];
+                for (i = 0; i < infoChildNodes.length; ++i) {
+                    if (infoChildNodes[i].nodeType == 1 || infoChildNodes[i].nodeType == 8) { // get rid of Text nodes
+                        sortedNodes.push(infoChildNodes[i]);
                     }
                 }
+
+                sortedNodes.sort(function(a,b) {
+                    return getIndex(a) == getIndex(b)
+                        ? 0
+                        : (getIndex(a) > getIndex(b) ? 1 : -1);
+                });
+
+                for (i = 0; i < sortedNodes.length; ++i) {
+                //for (i = sortedNodes.length - 1; i > -1; --i) {
+                  infoNode.appendChild(sortedNodes[i]);
+                  //console.log(sortedNodes[i].tagName);
+                }
+                
+                // for (var i = 0; i < infoChildNodes.length; i++) {
+                //     //Skip Text nodes; http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output
+                //     if (infoChildNodes[i].nodeType != 3) {
+                //         console.log(i);
+                //         //XML comment is 8; Element is 1
+                //         console.log(infoChildNodes[i].nodeType);
+                //         console.log(infoChildNodes[i].tagName);
+                //     }
+                // }
             }
             
             var serializer = new XMLSerializer(); 
