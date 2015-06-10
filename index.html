@@ -47,6 +47,13 @@
     <script>
         $("#doFormat").click(doFormat);
         
+        $('#source-text').on('input', function() {
+            formatButton = document.getElementById("doFormat");
+            formatButton.setAttribute("class", "btn btn-primary");
+            formatButton.removeAttribute("disabled");
+            formatButton.textContent = "Reformat";
+        });
+        
         function parseXML (xmlStr) {
             var xmlDoc;
             if (window.DOMParser) {
@@ -186,6 +193,11 @@
             
             document.getElementById("source-text").value = outputXML;
             document.getElementById("source-text").scrollTop = 0;
+            
+            formatButton = document.getElementById("doFormat");
+            formatButton.setAttribute("class", "btn btn-success");
+            formatButton.setAttribute("disabled", "disabled");
+            formatButton.textContent = "Reformat Successful";
         }
     </script>
 </body>
