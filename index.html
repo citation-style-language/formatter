@@ -12,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="libraries/vkbeautify.js"></script>
-    <script src="libraries/HTML.min.js"></script>
 </head>
 
 <body>
@@ -45,10 +44,10 @@
         </div>
     </div>
     <script>
-        $("#doFormat").click(doFormat);
+        document.getElementById("doFormat").addEventListener("click", doFormat(), false);
         
-        $('#source-text').on('input', function() {
-            formatButton = document.getElementById("doFormat");
+        document.getElementById("source-text").addEventListener("input", function () {
+            var formatButton = document.getElementById("doFormat");
             formatButton.setAttribute("class", "btn btn-primary");
             formatButton.removeAttribute("disabled");
             formatButton.textContent = "Reformat";
@@ -194,7 +193,7 @@
             document.getElementById("source-text").value = outputXML;
             document.getElementById("source-text").scrollTop = 0;
             
-            formatButton = document.getElementById("doFormat");
+            var formatButton = document.getElementById("doFormat");
             formatButton.setAttribute("class", "btn btn-success");
             formatButton.setAttribute("disabled", "disabled");
             formatButton.textContent = "Reformat Successful";
