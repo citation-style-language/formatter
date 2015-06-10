@@ -30,17 +30,12 @@
         <form class="form-horizontal" role="form">
             <div class="form-group" title="The CSL style to reformat.">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <textarea id="source-text" class="form-control source-input" rows="8"></textarea>
+                    <textarea id="source-text" class="form-control source-input" rows="20"></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-1">
                     <button id="doFormat" type="button" class="btn btn-primary" data-style="expand-left">Reformat</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <textarea id="output-text" class="form-control source-input" rows="8"></textarea>
                 </div>
             </div>
         </form>
@@ -189,7 +184,8 @@
             outputXML = outputXML.replace(/—/g,"&#8212;"); //em dash
             outputXML = outputXML.replace(/\u202F/g,"&#8239;"); //narrow no-break space
             
-            $("#output-text").text(outputXML);
+            document.getElementById("source-text").value = outputXML;
+            document.getElementById("source-text").scrollTop = 0;
         }
     </script>
 </body>
