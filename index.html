@@ -195,19 +195,18 @@
                 var infoChildNodes = infoNode.childNodes;
                 
                 var sortedNodes = [];
+                var nodeIndices = [];
                 for (i = 0; i < infoChildNodes.length; ++i) {
                     // Skip Text nodes (see http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output )
                     // nodeType 1 are Elements, nodeType 8 are XML comments
                     if (infoChildNodes[i].nodeType == 1 || infoChildNodes[i].nodeType == 8) {
                         sortedNodes.push(infoChildNodes[i]);
+                        nodeIndices.push(getIndex(infoChildNodes[i]));
                     }
                 }
 
                 sortedNodes.sort(function(a,b) {
-                    var indexA = getIndex(a);
-                    var indexB = getIndex(b);
-                    
-                    return indexA == indexB ? 0 : (indexA > indexB ? 1 : -1);
+                    return nodeIndices[a] == nodeIndices[b] ? 0 : (nodeIndices[a] > nodeIndices[b] ? 1 : -1);
                 });
 
                 for (i = 0; i < sortedNodes.length; ++i) {
