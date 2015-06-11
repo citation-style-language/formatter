@@ -163,22 +163,23 @@
         }
 
         function doFormat() {
+            // Get textarea content and parse as XML
             var inputString = document.getElementById("source-text").value;
             var XmlObject = parseXML(inputString);
             
-            //Trim whitespace from cs:title textContent
+            // Trim whitespace from cs:title textContent
             var styleTitle = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","title")[0];
             if (styleTitle) {
                 styleTitle.textContent = styleTitle.textContent.trim();
             }
             
-            //Trim whitespace from cs:summary textContent
+            // Trim whitespace from cs:summary textContent
             var styleSummary = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","summary")[0];
             if (styleSummary) {
                 styleSummary.textContent = styleSummary.textContent.trim();
             }
             
-            //Reorder attributes on cs:link
+            // Reorder attributes on cs:link
             var styleLinks = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","link");
             for (var i = 0; i < styleLinks.length; i++) {
                 if (styleLinks[i].hasAttribute("rel")) {
@@ -188,7 +189,7 @@
                 }
             }
             
-            //Reorder child elements in cs:info
+            // Reorder child elements in cs:info
             var infoNode = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","info")[0];
             if (infoNode) {
                 var infoChildNodes = infoNode.childNodes;
@@ -214,12 +215,14 @@
                 }
             }
             
+            // Convert XML object to string
             var serializer = new XMLSerializer(); 
             var outputXML = serializer.serializeToString(XmlObject);            
             
+            // Pretty print
             outputXML = vkbeautify.xml(outputXML, 2);
             
-            //Escape hard-to-identify characters
+            // Escape hard-to-identify characters
             outputXML = outputXML.replace(/\u00a0/g,"&#160;"); //no-break space
             outputXML = outputXML.replace(/ᵉ/g,"&#7497;"); //modifier letter small e
             outputXML = outputXML.replace(/‑/g,"&#8209;"); //non-breaking hyphen
@@ -227,9 +230,11 @@
             outputXML = outputXML.replace(/—/g,"&#8212;"); //em dash
             outputXML = outputXML.replace(/\u202F/g,"&#8239;"); //narrow no-break space
             
+            // Show result and scroll to top of textarea
             document.getElementById("source-text").value = outputXML;
             document.getElementById("source-text").scrollTop = 0;
             
+            // Disable button on success
             var formatButton = document.getElementById("doFormat");
             formatButton.setAttribute("class", "btn btn-success");
             formatButton.setAttribute("disabled", "disabled");
