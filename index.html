@@ -196,22 +196,27 @@
                 var infoChildNodes = infoNode.childNodes;
                 
                 var sortedNodes = [];
-                var nodeIndices = [];
                 for (i = 0; i < infoChildNodes.length; ++i) {
                     // Skip Text nodes (see http://stackoverflow.com/questions/12009329/why-does-this-childnodes-give-me-that-strange-output )
                     // nodeType 1 are Elements, nodeType 8 are XML comments
                     if (infoChildNodes[i].nodeType == 1 || infoChildNodes[i].nodeType == 8) {
-                        sortedNodes.push(infoChildNodes[i]);
-                        nodeIndices.push(getIndex(infoChildNodes[i]));
+                        sortedNodes.push([infoChildNodes[i], getIndex(infoChildNodes[i]), i]);
                     }
                 }
 
                 sortedNodes.sort(function(a,b) {
-                    return nodeIndices[a] == nodeIndices[b] ? 0 : (nodeIndices[a] > nodeIndices[b] ? 1 : -1);
+                    // First sort on desired element order
+                    var sortComparison = (a[1] == b[1] ? 0 : (a[1] > b[1] ? 1 : -1));
+
+                    // Secondary sort on original node position
+                    if (sortComparison == 0) {
+                        sortComparison = (a[2] == b[2] ? 0 : (a[2] > b[2] ? 1 : -1));
+                    }
+                    return sortComparison;
                 });
 
                 for (i = 0; i < sortedNodes.length; ++i) {
-                  infoNode.appendChild(sortedNodes[i]);
+                    infoNode.appendChild(sortedNodes[i][0]);
                 }
             }
             
