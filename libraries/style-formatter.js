@@ -153,13 +153,13 @@ var formatStyle = function (inputString) {
     outputString = outputString.replace(/\u202F/g,"&#8239;"); //narrow no-break space
 
     // Make sure XML declaration is present and that "utf-8" is lowercased
-    var xmlDeclarationRegEx = RegExp("^.*<\?xml.+");
+    var xmlDeclarationRegEx = /<\?xml.+\?>/;
     var xmlDeclaration = '<?xml version="1.0" encoding="utf-8"?>';
     if (xmlDeclarationRegEx.test(outputString)) {
       // Replace XML declaration if present
       outputString = outputString.replace(xmlDeclarationRegEx, xmlDeclaration);
     } else {
-      // Add XML declaration if absent (code for IE 11 seems to strip it)
+      // Add XML declaration if absent
       outputString = xmlDeclaration + "\n" + outputString;
     }
 
