@@ -163,5 +163,8 @@ var formatStyle = function (inputString) {
       outputString = xmlDeclaration + "\n" + outputString;
     }
 
+    // Add trailing return to match repository convention
+    outputString = outputString + "\n";
+
     return outputString;
 };
