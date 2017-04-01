@@ -147,6 +147,7 @@ var formatStyle = function (inputString) {
     // Escape hard-to-identify characters
     outputString = outputString.replace(/\u00a0/g,"&#160;"); //no-break space
     outputString = outputString.replace(/ᵉ/g,"&#7497;"); //modifier letter small e
+    outputString = outputString.replace(/\u2003/g, "&#8195;"); // em space
     outputString = outputString.replace(/‑/g,"&#8209;"); //non-breaking hyphen
     outputString = outputString.replace(/–/g,"&#8211;"); //en dash
     outputString = outputString.replace(/—/g,"&#8212;"); //em dash
