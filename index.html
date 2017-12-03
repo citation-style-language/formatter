@@ -13,6 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
     <script src="libraries/vkbeautify.js"></script>
     <script src="libraries/style-formatter.js"></script>
 </head>
@@ -32,7 +33,7 @@
         <form class="form-horizontal">
             <div class="form-group" title="The CSL style to reformat.">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <textarea id="source-text" class="form-control source-input" rows="5"></textarea>
+                    <div id="source-text" class="form-control source-input"></div>
                 </div>
             </div>
             <div class="form-group">
@@ -50,6 +51,13 @@
         </div>
     </div>
     <script>
+        // Initialize Ace editor
+        window.editor = ace.edit("source-text");
+        editor.getSession().setUseWrapMode(true);
+        editor.setHighlightActiveLine(true);
+        editor.setTheme("ace/theme/eclipse");
+        editor.getSession().setMode("ace/mode/xml");
+    
         var toolTipText = '<p>This tool formats validating CSL styles according to our CSL repository standards.</p>' +
         '<p>In particular, it:</p>' +
         '<ul><li>Reindents the style</li>' +
@@ -73,16 +81,15 @@
 
         document.getElementById("doFormat").addEventListener("click", doFormat, false);
 
-        // Reset button when user changes the textarea content
-        document.getElementById("source-text").addEventListener("input", function () {
-            var formatButton = document.getElementById("doFormat");
-            formatButton.setAttribute("class", "btn btn-primary");
-            formatButton.removeAttribute("disabled");
-            formatButton.textContent = "Reformat";
+        // Reset button when user changes the editor content
+        editor.getSession().on('change', function(e) {
+          var formatButton = document.getElementById("doFormat");
+          formatButton.setAttribute("class", "btn btn-primary");
+          formatButton.removeAttribute("disabled");
+          formatButton.textContent = "Reformat";
         });
 
-
-        // Always try to keep height of textarea maximized
+        // Always try to keep height of editor maximized
         window.addEventListener("load", resizeMe, false);
         window.addEventListener("resize", resizeMe, false);
 
@@ -97,19 +104,21 @@
             var newTargetHeight = Math.max(originalTargetHeight, maximumTargetHeight);
 
             $(this).attr('style', 'height:' + newTargetHeight + 'px;');
+            editor.resize();
           });
         }
 
         function doFormat() {
-            // Get textarea content
-            var inputString = document.getElementById("source-text").value;
+            // Get editor content
+            var inputString = editor.getValue();
 
             // Reformat style
             var outputString = formatStyle(inputString);
 
-            // Show result and scroll to top of textarea
-            document.getElementById("source-text").value = outputString;
-            document.getElementById("source-text").scrollTop = 0;
+            // Show result and scroll to top of editor
+            editor.setValue(outputString);
+            editor.clearSelection();
+            editor.scrollToLine(0);
 
             // Disable button on success
             var formatButton = document.getElementById("doFormat");
