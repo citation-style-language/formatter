@@ -1,133 +1,151 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-    <title>CSL Style Formatter</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon-32x32.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
-    <script src="libraries/vkbeautify.js"></script>
-    <script src="libraries/style-formatter.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://getbootstrap.com/docs/4.4/examples/sticky-footer-navbar/sticky-footer-navbar.css">
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.7/ace.js" integrity="sha256-C7DTYRJLG+B/VEzHGeoPMw699nsTQYPAXHKXZb+q04E=" crossorigin="anonymous"></script>
+
+  <script src="libraries/vkbeautify.js"></script>
+  <script src="libraries/style-formatter.js"></script>
+
+  <style>
+    nav {
+      background-color: #2D98E0;
+    }
+
+    .btn {
+      white-space: nowrap;
+    }
+  </style>
+  <link rel="icon" type="image/png" href="favicon-32x32.png">
+
+  <title>CSL Style Formatter</title>
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
+  <header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <span class="navbar-brand mb-0 h1"><img src="logo.svg" width="30" height="30" class="d-inline-block align-middle mr-2" alt="">CSL Style Formatter</span>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://citationstyles.org/" target="_blank">CitationStyles.org</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Begin page content -->
+  <main role="main" class="flex-shrink-0">
     <div class="container-fluid">
-        <div class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <div class="navbar-brand">CSL Style Formatter</div>
-                    <div class="navbar-text">
-                        <a class="active" href="http://citationstyles.org/">CitationStyles.org</a>
-                    </div>
-                </div>
-            </div>
+      <div class="row my-3">
+        <div class="col-md-8 offset-md-1">
+          <div id="source-text" class="source-input border" title="The CSL style to reformat."></div>
         </div>
-        <form class="form-horizontal">
-            <div class="form-group" title="The CSL style to reformat.">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div id="source-text" class="source-input"></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-8 col-sm-offset-1">
-                    <button id="doFormat" type="button" class="btn btn-primary" data-style="expand-left">Reformat</button>
-                </div>
-                <div class="col-sm-1 col-sm-offset-1">
-                    <button id="infoButton" type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-question-sign"></span> Info
-                    </button>
-                </div>
-            </div>
-        </form>
-        <div><small>Created by <a href="http://rintze.zelle.me/">Rintze M. Zelle</a>. Powered by GitHub Pages. <a href="https://github.com/citation-style-language/formatter">Code</a> on GitHub.</small>
+      </div>
+      <div class="row my-3">
+        <div class="col-md-1 offset-md-1">
+          <button id="doFormat" type="button" class="btn btn-primary btn-lg" data-style="expand-left">Reformat</button>
         </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-md-6 offset-md-1">
+          <hr>
+          <h4>About CSL Style Formatter</h4>
+          <p>The CSL Style Formatter reformats <a href="https://citationstyles.org/" target="_blank">Citation Style Language (CSL)</a> styles according to our
+            <a href="https://github.com/citation-style-language/styles/" target="_blank">repository</a>
+            standards and can be used to prepare your style for
+            <a href="https://github.com/citation-style-language/styles/blob/master/CONTRIBUTING.md#guide-to-submitting-csl-styles-and-csl-locales" target="_blank">submission</a>.
+            For best results, first make sure your style validates against our <a href="https://validator.citationstyles.org/" target="_blank">CSL style validator</a>.</p>
+          <p>To use the tool, paste your XML style code into the editor window above, click the "Reformat" button,
+            and copy the reformatted style to your destination of choice.</p>
+          <p>Formatting changes include:</p>
+          <ul>
+            <li>Standard indentation</li>
+            <li>Escaping of certain characters that are hard to identify by eye, like non-breaking spaces and the various dashes.</li>
+            <li>Standard ordering the child elements of <code>&lt;info/&gt;</code></li>
+            <li>Standard ordering of attributes on <code>&lt;link/&gt;</code> elements</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <script>
-        // Initialize Ace editor
-        window.editor = ace.edit("source-text");
-        editor.getSession().setUseWrapMode(true);
-        editor.setHighlightActiveLine(true);
-        editor.setShowPrintMargin(false);
-        editor.setTheme("ace/theme/eclipse");
-        editor.getSession().setMode("ace/mode/xml");
+  </main>
 
-        var toolTipText = '<p>This tool formats validating CSL styles according to our CSL repository standards.</p>' +
-        '<p>In particular, it:</p>' +
-        '<ul><li>Reindents the style</li>' +
-        '<li>Escapes certain characters that are hard to identify by eye, like non-breaking spaces and the various dashes.</li>' +
-        '<li>Reorders the child elements of &lt;info/&gt;</li>' +
-        '<li>Puts the attributes on &lt;link/&gt; in standard order</li>' +
-        '</ul>';
+  <footer class="footer mt-auto py-3">
+    <div class="container-fluid">
+      <span class="text-muted">Created by <a href="https://rintze.zelle.me/">Rintze M. Zelle</a>. Powered by GitHub Pages. <a href="https://github.com/citation-style-language/formatter">Code</a> on GitHub.</span>
+    </div>
+  </footer>
 
-        $('#infoButton').qtip({
-            content: {
-                title: 'What does the CSL Style Formatter do?',
-                text: toolTipText
-            },
-            position: {
-                my: 'bottom right',
-                at: 'top left',
-                target: $('#infoButton')
-            },
-            style: { classes: 'qtip-bootstrap' }
-        });
+  <script>
+    // Initialize Ace editor
+    window.editor = ace.edit("source-text");
+    editor.getSession().setUseWrapMode(true);
+    editor.setHighlightActiveLine(true);
+    editor.setShowPrintMargin(false);
+    editor.setTheme("ace/theme/eclipse");
+    editor.getSession().setMode("ace/mode/xml");
 
-        document.getElementById("doFormat").addEventListener("click", doFormat, false);
+    document.getElementById("doFormat").addEventListener("click", doFormat, false);
 
-        // Reset button when user changes the editor content
-        editor.getSession().on('change', function(e) {
-          var formatButton = document.getElementById("doFormat");
-          formatButton.setAttribute("class", "btn btn-primary");
-          formatButton.removeAttribute("disabled");
-          formatButton.textContent = "Reformat";
-        });
+    // Reset button when user changes the editor content
+    editor.getSession().on('change', function(e) {
+      var formatButton = document.getElementById("doFormat");
+      formatButton.setAttribute("class", "btn btn-primary btn-lg");
+      formatButton.removeAttribute("disabled");
+      formatButton.textContent = "Reformat";
+    });
 
-        // Always try to keep height of editor maximized
-        window.addEventListener("load", resizeMe, false);
-        window.addEventListener("resize", resizeMe, false);
+    // Always try to keep height of editor maximized
+    window.addEventListener("load", resizeMe, false);
+    window.addEventListener("resize", resizeMe, false);
 
-        var originalTargetHeight = $("#source-text").height();
-        function resizeMe() {
-          $("#source-text").each(function(){
-            var totalAvailableHeight = document.documentElement.clientHeight;
-            var totalUsedHeight = $("html").height();
-            var currentTargetHeight = $(this).height();
-            var maximumTargetHeight = currentTargetHeight + totalAvailableHeight - totalUsedHeight;
+    var originalTargetHeight = $("#source-text").height();
 
-            var newTargetHeight = Math.max(originalTargetHeight, maximumTargetHeight);
+    function resizeMe() {
+      $("#source-text").each(function() {
+        var totalAvailableHeight = document.documentElement.clientHeight;
+        var totalUsedHeight = $("html").height();
+        var currentTargetHeight = $(this).height();
+        var maximumTargetHeight = currentTargetHeight + totalAvailableHeight - totalUsedHeight;
 
-            $(this).attr('style', 'height:' + newTargetHeight + 'px;');
-            editor.resize();
-          });
-        }
+        var newTargetHeight = Math.max(50, originalTargetHeight, maximumTargetHeight);
 
-        function doFormat() {
-            // Get editor content
-            var inputString = editor.getValue();
+        $(this).attr('style', 'height:' + newTargetHeight + 'px;');
+        editor.resize();
+      });
+    }
 
-            // Reformat style
-            var outputString = formatStyle(inputString);
+    function doFormat() {
+      // Get editor content
+      var inputString = editor.getValue();
 
-            // Show result and scroll to top of editor
-            editor.setValue(outputString);
-            editor.clearSelection();
-            editor.scrollToLine(0);
+      // Reformat style
+      var outputString = formatStyle(inputString);
 
-            // Disable button on success
-            var formatButton = document.getElementById("doFormat");
-            formatButton.setAttribute("class", "btn btn-success");
-            formatButton.setAttribute("disabled", "disabled");
-            formatButton.textContent = "Reformat Successful";
-        }
-    </script>
+      // Show result and scroll to top of editor
+      editor.setValue(outputString);
+      editor.clearSelection();
+      editor.scrollToLine(0);
+
+      // Disable button on success
+      var formatButton = document.getElementById("doFormat");
+      formatButton.setAttribute("class", "btn btn-success btn-lg");
+      formatButton.setAttribute("disabled", "disabled");
+      formatButton.textContent = "Reformat Successful";
+    }
+  </script>
 </body>
 
 </html>
