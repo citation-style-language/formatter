@@ -84,6 +84,38 @@ var formatStyle = function (inputString) {
     };
 
     var XmlObject = parseXML(inputString);
+    
+    // Reorder attributes on cs:style
+    // Place "xmlns" first, "version" second, "default-locale" (optional) last, leave other attributes at former position
+    var styleRoot = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","style")[0];
+    if (styleRoot.hasAttribute("xmlns")) {
+        var xmlnsValue = styleRoot.getAttribute("xmlns");
+        styleRoot.removeAttribute("xmlns"); 
+        styleRoot.setAttribute("xmlns", xmlnsValue);
+    }
+    if (styleRoot.hasAttribute("version")) {
+        var versionValue = styleRoot.getAttribute("version");
+        styleRoot.removeAttribute("version"); 
+        styleRoot.setAttribute("version", versionValue);
+    }
+    var styleRootAttributesCount = styleRoot.attributes.length;
+    for (var j = 0; j < styleRootAttributesCount; j++) {
+        var attribute = styleRoot.attributes[j];
+        if (attribute.name != "xmlns" && attribute.name != "version") {
+          var attributeValue = attribute.value;
+          styleRoot.removeAttribute(attribute.name); 
+          styleRoot.setAttribute(attribute.name, attributeValue);
+          
+          // Since we're moving the attribute (within the NamedNodeMap collection), adjust counter and max index since next attribute will move down
+          j = j - 1;
+          styleRootAttributesCount = styleRootAttributesCount - 1;
+        }
+    }
+    if (styleRoot.hasAttribute("default-locale")) {
+        var locale = styleRoot.getAttribute("default-locale");
+        styleRoot.removeAttribute("default-locale"); 
+        styleRoot.setAttribute("default-locale", locale);
+    }
 
     // Trim whitespace from cs:title textContent
     var styleTitle = XmlObject.getElementsByTagNameNS("http://purl.org/net/xbiblio/csl","title")[0];
