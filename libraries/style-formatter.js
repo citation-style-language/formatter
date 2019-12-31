@@ -2,13 +2,11 @@ var formatStyle = function (inputString) {
     
     var parseXML = function (xmlStr) {
         var xmlDoc;
-        if (window.DOMParser) {
-            var parser = new DOMParser();
-            xmlDoc = parser.parseFromString(xmlStr,"text/xml");
-        } else { // code for IE
-            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async = false;
-            xmlDoc.loadXML(xmlStr);
+        var parser = new DOMParser();
+        xmlDoc = parser.parseFromString(xmlStr,"text/xml");
+        
+        if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+          throw "invalidXML";
         }
         return xmlDoc;
     };

@@ -50,6 +50,11 @@
   <main role="main" class="flex-shrink-0">
     <div class="container-fluid">
       <div class="row my-3">
+        <div class="col-md-8 offset-md-1 alert alert-danger d-none" role="alert" id="alert">
+          <strong>Error.</strong> Text is invalid XML.
+        </div>
+      </div>
+      <div class="row my-3">
         <div class="col-md-8 offset-md-1">
           <div id="source-text" class="source-input border" title="The CSL style to reformat."></div>
         </div>
@@ -57,6 +62,12 @@
       <div class="row my-3">
         <div class="col-md-1 offset-md-1">
           <button id="doFormat" type="button" class="btn btn-primary btn-lg" data-style="expand-left">Reformat</button>
+        </div>
+        <div class="col-md-5 offset-md-2">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="fileBrowser">
+            <label class="custom-file-label" for="fileBrowser" id="fileBrowserLabel">No file selected</label>
+          </div>
         </div>
       </div>
       <div class="row my-3">
@@ -68,14 +79,14 @@
             standards and can be used to prepare your style for
             <a href="https://github.com/citation-style-language/styles/blob/master/CONTRIBUTING.md#guide-to-submitting-csl-styles-and-csl-locales" target="_blank">submission</a>.
             For best results, first make sure your style validates against our <a href="https://validator.citationstyles.org/" target="_blank">CSL style validator</a>.</p>
-          <p>To use the tool, paste your XML style code into the editor window above, click the "Reformat" button,
+          <p>To use the tool, either paste your XML style code into the editor window above or click the "Browse" button to select a style file on your computer, click the "Reformat" button,
             and copy the reformatted style to your destination of choice.</p>
           <p>Formatting changes include:</p>
           <ul>
             <li>Standard indentation</li>
-            <li>Escaping of certain characters that are hard to identify by eye, like non-breaking spaces and the various dashes.</li>
+            <li>Escaping of certain characters that are hard to identify by eye, like non-breaking spaces and the various dashes</li>
             <li>Standard ordering the child elements of <code>&lt;info/&gt;</code></li>
-            <li>Standard ordering of attributes on <code>&lt;link/&gt;</code> elements</li>
+            <li>Standard ordering of attributes on <code>&lt;style/&gt;</code> and <code>&lt;link/&gt;</code> elements</li>
           </ul>
         </div>
       </div>
@@ -98,6 +109,28 @@
     editor.getSession().setMode("ace/mode/xml");
 
     document.getElementById("doFormat").addEventListener("click", doFormat, false);
+
+    var inputElement = document.getElementById("fileBrowser");
+    inputElement.addEventListener("change", handleFileSelect, false);
+    
+    function handleFileSelect(event) {
+      var file = event.target.files[0];
+      var maxSize = 256; // in kb
+      
+      var fileSize = file.size; // in bytes
+      if (fileSize > (maxSize * 1000)){
+          alert('Selected file is larger than ' + maxSize + ' kb. Did you select a CSL style?');
+      } else {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            editor.setValue(e.target.result);
+          };
+          reader.readAsText(file);
+          
+          var browseButton = document.getElementById("fileBrowserLabel");
+          browseButton.textContent = file.name;
+      }
+    }
 
     // Reset button when user changes the editor content
     editor.getSession().on('change', function(e) {
@@ -128,11 +161,25 @@
     }
 
     function doFormat() {
+      // Hide XML validation error alert
+      var alertDiv = document.getElementById("alert");
+      alertDiv.classList.add("d-none");
+      
       // Get editor content
       var inputString = editor.getValue();
 
       // Reformat style
-      var outputString = formatStyle(inputString);
+      var outputString;
+      try {
+        outputString = formatStyle(inputString);
+      }
+      catch(e) {
+        if (e == "invalidXML") {
+          var alertDiv = document.getElementById("alert");
+          alertDiv.classList.remove("d-none");
+        }
+        throw "Reformatting error";
+      }
 
       // Show result and scroll to top of editor
       editor.setValue(outputString);
