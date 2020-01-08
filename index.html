@@ -153,7 +153,7 @@
         var currentTargetHeight = $(this).height();
         var maximumTargetHeight = currentTargetHeight + totalAvailableHeight - totalUsedHeight;
 
-        var newTargetHeight = Math.max(50, originalTargetHeight, maximumTargetHeight);
+        var newTargetHeight = Math.max(250, originalTargetHeight, maximumTargetHeight);
 
         $(this).attr('style', 'height:' + newTargetHeight + 'px;');
         editor.resize();
