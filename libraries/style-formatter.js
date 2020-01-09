@@ -91,15 +91,10 @@ var formatStyle = function (inputString) {
         styleRoot.removeAttribute("xmlns"); 
         styleRoot.setAttribute("xmlns", xmlnsValue);
     }
-    if (styleRoot.hasAttribute("version")) {
-        var versionValue = styleRoot.getAttribute("version");
-        styleRoot.removeAttribute("version"); 
-        styleRoot.setAttribute("version", versionValue);
-    }
     var styleRootAttributesCount = styleRoot.attributes.length;
     for (var j = 0; j < styleRootAttributesCount; j++) {
         var attribute = styleRoot.attributes[j];
-        if (attribute.name != "xmlns" && attribute.name != "version") {
+        if (attribute.name != "xmlns") {
           var attributeValue = attribute.value;
           styleRoot.removeAttribute(attribute.name); 
           styleRoot.setAttribute(attribute.name, attributeValue);
