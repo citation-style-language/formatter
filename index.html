@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="row my-3">
-        <div class="col-md-6 offset-md-1">
+        <div class="col-lg-6 offset-lg-1">
           <hr>
           <h4>About CSL Style Formatter</h4>
           <p>The CSL Style Formatter reformats <a href="https://citationstyles.org/" target="_blank">Citation Style Language (CSL)</a> styles according to our
@@ -148,13 +148,12 @@
 
     function resizeMe() {
       $("#source-text").each(function() {
-        var totalAvailableHeight = document.documentElement.clientHeight;
-        var totalUsedHeight = $("html").height();
         var currentTargetHeight = $(this).height();
-        var maximumTargetHeight = currentTargetHeight + totalAvailableHeight - totalUsedHeight;
-
-        var newTargetHeight = Math.max(250, originalTargetHeight, maximumTargetHeight);
-
+        var maxBodyHeight = document.documentElement.clientHeight - $("header").height() - $("footer").height();
+        var currentBodyHeight = document.body.scrollHeight;
+        var availableBodyHeight = maxBodyHeight - currentBodyHeight;
+        var newTargetHeight = Math.max(100, currentTargetHeight + availableBodyHeight);
+        
         $(this).attr('style', 'height:' + newTargetHeight + 'px;');
         editor.resize();
       });
