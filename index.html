@@ -152,7 +152,7 @@
         var maxBodyHeight = document.documentElement.clientHeight - $("header").height() - $("footer").height();
         var currentBodyHeight = document.body.scrollHeight;
         var availableBodyHeight = maxBodyHeight - currentBodyHeight;
-        var newTargetHeight = Math.max(100, currentTargetHeight + availableBodyHeight);
+        var newTargetHeight = Math.max(250, currentTargetHeight + availableBodyHeight);
         
         $(this).attr('style', 'height:' + newTargetHeight + 'px;');
         editor.resize();
