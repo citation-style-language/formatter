@@ -185,6 +185,8 @@
       editor.setValue(outputString);
       editor.clearSelection();
       editor.scrollToLine(0);
+      editor.navigateFileStart();
+      editor.focus();
 
       // Disable button on success
       var formatButton = document.getElementById("doFormat");
