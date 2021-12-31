@@ -194,3 +194,5 @@ var formatStyle = function (inputString) {
 
     return outputString;
 };
+
+if (typeof module !== 'undefined') module.exports = formatStyle;
