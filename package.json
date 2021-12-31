@@ -27,7 +27,7 @@
     "bin/style-formatter"
   ],
   "bin": {
-    "style-formatter": "./bin/style-formatter.js"
+    "style-formatter": "./bin/style-formatter"
   },
   "publishConfig": {
     "access": "public"
