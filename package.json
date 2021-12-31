@@ -1,6 +1,6 @@
 {
   "name": "@retorquere/csl-formatter",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "reformats Citation Style Language (CSL) styles according to the CSL repository standards and can be used to prepare your style for submission.",
   "main": "index.js",
   "scripts": {
