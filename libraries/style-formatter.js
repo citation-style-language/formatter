@@ -1,6 +1,6 @@
 if (typeof module !== 'undefined') {
-  if (typeof DOMParser === 'undefined') var DOMParser = require('xmldom').DOMParser
-  if (typeof XMLSerializer === 'undefined') var XMLSerializer = require('xmldom').XMLSerializer
+  if (typeof DOMParser === 'undefined') var DOMParser = require('@xmldom/xmldom').DOMParser
+  if (typeof XMLSerializer === 'undefined') var XMLSerializer = require('@xmldom/xmldom').XMLSerializer
   if (typeof vkbeautify === 'undefined') var vkbeautify = require('./vkbeautify')
 }
 
