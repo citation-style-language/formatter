@@ -23,9 +23,16 @@
     "package.json",
     "index.js",
     "libraries/style-formatter.js",
-    "libraries/vkbeautify.js"
+    "libraries/vkbeautify.js",
+    "bin/style-formatter"
   ],
+  "bin": {
+    "style-formatter": "bin/style-formatter.js"
+  },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "xmldom": "^0.6.0"
   }
 }
