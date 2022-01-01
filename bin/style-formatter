@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
+const path = require('path')
 const formatter = require('../index')
 
 if (process.argv.length !== 4) {
@@ -9,9 +10,12 @@ if (process.argv.length !== 4) {
 }
 
 try {
-  let style = fs.readFileSync(process.argv[2], 'utf-8')
-  style = formatter.formatStyle(style);
-  fs.writeFileSync(process.argv[3], style)
+  const style = fs.readFileSync(process.argv[2], 'utf-8');
+  const reindented = formatter.formatStyle(style);
+  if (style !== reindented) {
+    console.log(path.basename(process.argv[2]), 'reindented');
+    fs.writeFileSync(process.argv[3], style);
+  }
 }
 catch (e) {
   if (e === 'invalidXML') {
