@@ -1,0 +1,39 @@
+{
+  "name": "@retorquere/csl-formatter",
+  "version": "1.0.8",
+  "description": "reformats Citation Style Language (CSL) styles according to the CSL repository standards and can be used to prepare your style for submission.",
+  "main": "index.js",
+  "scripts": {
+    "postversion": "npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/citation-style-language/formatter.git"
+  },
+  "keywords": [
+    "CSL"
+  ],
+  "author": "Rintze M. Zelle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/citation-style-language/formatter/issues"
+  },
+  "homepage": "https://github.com/citation-style-language/formatter",
+  "files": [
+    "package.json",
+    "index.js",
+    "libraries/style-formatter.js",
+    "libraries/vkbeautify.js",
+    "bin/style-formatter"
+  ],
+  "bin": {
+    "style-formatter": "./bin/style-formatter"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.8.0",
+    "unidiffer": "^0.0.10"
+  }
+}

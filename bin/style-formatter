@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+const fs = require('fs')
+const path = require('path')
+const formatter = require('../index')
+const unidiff = require('unidiffer')
+
+const verbose = process.env.VERBOSE === 'true'
+
+if (process.argv.length !== 4) {
+  console.log('need input and output file')
+  process.exit(1)
+}
+
+const source = process.argv[2]
+const target = process.argv[3]
+
+try {
+  const style = fs.readFileSync(source, 'utf-8');
+  const reindented = formatter.formatStyle(style);
+  if (style !== reindented) {
+    fs.writeFileSync(target, reindented);
+    if (verbose) {
+      console.log(unidiff.diffAsText(source, target, { aname: source, bname: target }))
+    }
+    else {
+      console.log(path.basename(source), 'reindented')
+    }
+  }
+}
+catch (e) {
+  if (e === 'invalidXML') {
+    console.log(`${source}: Invalid XML`)
+  }
+  else {
+    console.log(source, e.message, e.stack)
+  }
+  process.exit(1)
+}

@@ -127,6 +127,7 @@ vkbeautify.prototype.xml = function(text,step) {
 	return  (str[0] == '\n') ? str.slice(1) : str;
 }
 
-window.vkbeautify = new vkbeautify();
+if (typeof window !== 'undefined') window.vkbeautify = new vkbeautify();
+if (typeof module !== 'undefined') module.exports = new vkbeautify();
 
 })();
