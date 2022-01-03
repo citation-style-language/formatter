@@ -3,6 +3,8 @@
 const fs = require('fs')
 const path = require('path')
 const formatter = require('../index')
+const unidiff = require('unidiffer')
+
 const verbose = process.env.VERBOSE === 'true'
 
 if (process.argv.length !== 4) {
@@ -17,8 +19,13 @@ try {
   const style = fs.readFileSync(source, 'utf-8');
   const reindented = formatter.formatStyle(style);
   if (style !== reindented) {
-    fs.writeFileSync(target, style);
-    console.log(verbose ? source : path.basename(source), 'reindented', verbose ? `and written to ${target}` : '');
+    fs.writeFileSync(target, reindented);
+    if (verbose) {
+      console.log(unidiff.diffAsText(source, target, { aname: source, bname: target }))
+    }
+    else {
+      console.log(path.basename(source), 'reindented')
+    }
   }
 }
 catch (e) {
