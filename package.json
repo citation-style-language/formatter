@@ -33,7 +33,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@xmldom/xmldom": "^0.8.0",
+    "@xmldom/xmldom": "^0.8.3",
     "unidiffer": "^0.0.10"
   }
 }
